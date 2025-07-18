@@ -1,4 +1,23 @@
-/* Twitter Profile Hider - Content Styles */
+/* X Profile Hider - Content Styles */
 
-/* デフォルトでは何もしない */
-/* JavaScriptで動的にスタイルを適用 */
+/* プロフィール要素を非表示にするクラス */
+.x-profile-hider-hidden {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+}
+
+/* より具体的なセレクタで強制的に非表示 */
+[data-testid="SideNav_AccountSwitcher_Button"].x-profile-hider-hidden {
+  display: none !important;
+}
+
+/* フォールバック用の汎用セレクタ */
+button[aria-label*="アカウントメニュー"].x-profile-hider-hidden,
+button[aria-label*="Account menu"].x-profile-hider-hidden {
+  display: none !important;
+}
