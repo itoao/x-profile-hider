@@ -1,4 +1,4 @@
-# Twitter Profile Hider テストガイド
+# X Profile Hider テストガイド
 
 ## クイックテスト（5分）
 
@@ -59,7 +59,7 @@
 ### 2. 拡張機能ログチェック
 ```
 1. chrome://extensions/ にアクセス
-2. Twitter Profile Hiderの「詳細」をクリック
+2. X Profile Hiderの「詳細」をクリック
 3. 「バックグラウンドページを検証」をクリック
 4. コンソールでログを確認
 ```

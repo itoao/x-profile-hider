@@ -1,4 +1,4 @@
-# Twitter Profile Hider
+# X Profile Hider
 
 X.com（旧Twitter）のインターフェース左下に表示されるプロフィール情報を非表示にするChrome拡張機能です。
 
@@ -15,8 +15,8 @@ X.com（旧Twitter）のインターフェース左下に表示されるプロ�
 
 1. このリポジトリをクローン
    ```bash
-   git clone https://github.com/yourusername/twitter-profile-hider.git
-   cd twitter-profile-hider
+   git clone https://github.com/yourusername/x-profile-hider.git
+   cd x-profile-hider
    ```
 
 2. Chrome拡張機能の管理ページを開く
@@ -84,7 +84,7 @@ X.com（旧Twitter）のインターフェース左下に表示されるプロ�
 ### ディレクトリ構造
 
 ```
-twitter-profile-hider/
+x-profile-hider/
 ├── manifest.json          # 拡張機能のマニフェスト
 ├── src/
 │   ├── scripts/
