@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Twitter Profile Hider (Test)",
+  "name": "X Profile Hider (Test)",
   "version": "1.0.0",
   "description": "Test version - Hide your profile information on X.com (Twitter) for privacy",
   "permissions": [
