@@ -1,4 +1,4 @@
-// Twitter Profile Hider - Popup Script
+// X Profile Hider - Popup Script
 
 const toggleSwitch = document.getElementById('toggleSwitch');
 const statusText = document.getElementById('statusText');
@@ -38,16 +38,11 @@ toggleSwitch.addEventListener('change', async () => {
     }
   } catch (error) {
     console.error('Failed to toggle state:', error);
-    // エラーが発生した場合は元の状態に戻す
     loadCurrentState();
   }
 });
 
-// デバッグ用ログ
-console.log('Twitter Profile Hider: Popup script loaded');
-
 // 初期化
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Twitter Profile Hider: Popup DOM loaded');
   loadCurrentState();
 });
