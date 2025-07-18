@@ -1,0 +1,127 @@
+/* Twitter Profile Hider - Popup Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 300px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #ffffff;
+  color: #14171a;
+}
+
+.popup-container {
+  padding: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #14171a;
+}
+
+.description {
+  font-size: 14px;
+  color: #536471;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f7f9fa;
+  border-radius: 12px;
+}
+
+/* トグルスイッチのスタイル */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cfd9de;
+  transition: 0.3s;
+  border-radius: 28px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.3s;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .slider {
+  background-color: #1d9bf0;
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+.status-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #536471;
+  transition: color 0.3s;
+}
+
+.status-text.enabled {
+  color: #1d9bf0;
+}
+
+.info {
+  padding: 12px;
+  background-color: #f7f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #1d9bf0;
+}
+
+.info p {
+  font-size: 12px;
+  color: #536471;
+  line-height: 1.5;
+}
+
+/* ホバー効果 */
+.toggle-switch:hover .slider {
+  background-color: #b1bbc2;
+}
+
+input:checked + .slider:hover {
+  background-color: #1a8cd8;
+}
+
+/* フォーカス効果 */
+.toggle-switch input:focus + .slider {
+  box-shadow: 0 0 0 4px rgba(29, 155, 240, 0.2);
+}

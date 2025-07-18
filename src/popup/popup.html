@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Twitter Profile Hider</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <h1 class="title">Profile Hider</h1>
+    <p class="description">X.comのプロフィール情報を非表示にします</p>
+    
+    <div class="toggle-container">
+      <label class="toggle-switch">
+        <input type="checkbox" id="toggleSwitch">
+        <span class="slider"></span>
+      </label>
+      <span id="statusText" class="status-text">無効</span>
+    </div>
+    
+    <div class="info">
+      <p>プロフィールアイコン、ユーザー名、IDが非表示になります</p>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
