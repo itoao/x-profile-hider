@@ -5,7 +5,7 @@ console.log('Document title:', document.title);
 
 // ページに視覚的な確認要素を追加
 const testDiv = document.createElement('div');
-testDiv.id = 'twitter-profile-hider-test';
+testDiv.id = 'x-profile-hider-test';
 testDiv.style.cssText = `
   position: fixed;
   top: 10px;
@@ -18,7 +18,7 @@ testDiv.style.cssText = `
   font-family: Arial, sans-serif;
   font-size: 12px;
 `;
-testDiv.textContent = 'Twitter Profile Hider: Script Loaded!';
+testDiv.textContent = 'X Profile Hider: Script Loaded!';
 document.body.appendChild(testDiv);
 
 // 3秒後に削除

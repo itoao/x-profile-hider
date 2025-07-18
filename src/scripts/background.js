@@ -1,4 +1,4 @@
-// Twitter Profile Hider - Background Script
+// X Profile Hider - Background Script
 
 // 拡張機能の状態を管理
 let extensionState = {
@@ -143,8 +143,6 @@ chrome.runtime.onInstalled.addListener(async (details) => {
   }
 });
 
-// デバッグ用ログ
-console.log('Twitter Profile Hider: Background script loaded');
 
 // 初期化
 loadState();

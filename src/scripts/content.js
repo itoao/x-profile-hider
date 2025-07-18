@@ -1,4 +1,4 @@
-// Twitter Profile Hider - Content Script
+// X Profile Hider - Content Script
 
 const PROFILE_SELECTORS = {
   // X.com/Twitter左下のプロフィール要素のセレクタ
@@ -82,14 +82,13 @@ function toggleProfileVisibility(hide) {
   
   if (profileContainer) {
     if (hide) {
-      profileContainer.style.opacity = '0';
-      profileContainer.style.pointerEvents = 'none';
-      profileContainer.style.visibility = 'hidden';
+      profileContainer.style.display = 'none';
+      profileContainer.classList.add('x-profile-hider-hidden');
     } else {
-      profileContainer.style.opacity = '';
-      profileContainer.style.pointerEvents = '';
-      profileContainer.style.visibility = '';
+      profileContainer.style.display = '';
+      profileContainer.classList.remove('x-profile-hider-hidden');
     }
+    
     isHidden = hide;
     console.log(`Profile visibility: ${hide ? 'hidden' : 'visible'}`);
   } else {
@@ -150,60 +149,146 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 /**
  * 初期化処理
  */
-function init() {
-  console.log('Twitter Profile Hider: Initializing...');
+/**
+ * DOM要素の出現を待機する
+ * @param {string} selector - 待機するセレクタ
+ * @param {number} timeout - タイムアウト時間（ミリ秒）
+ * @returns {Promise<Element|null>}
+ */
+function waitForElement(selector, timeout = 10000) {
+  return new Promise((resolve) => {
+    const element = document.querySelector(selector);
+    if (element) {
+      resolve(element);
+      return;
+    }
+
+    const observer = new MutationObserver(() => {
+      const element = document.querySelector(selector);
+      if (element) {
+        observer.disconnect();
+        resolve(element);
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+
+    setTimeout(() => {
+      observer.disconnect();
+      resolve(null);
+    }, timeout);
+  });
+}
+
+/**
+ * 汎用的なX.com DOM探索
+ */
+function exploreDOM() {
+  // 基本的な構造要素を確認（ログなし）
+  const body = document.body;
+  const mainContainers = document.querySelectorAll('div[id], main, [role="main"]');
+  const navElements = document.querySelectorAll('nav, [role="navigation"]');
+  const testidElements = document.querySelectorAll('[data-testid]');
+  const imgElements = document.querySelectorAll('img[src*="profile"], img[alt*="profile"], img[alt*="avatar"]');
+  const linkElements = document.querySelectorAll('a[href*="profile"], a[href*="settings"]');
+}
+
+async function init() {
   try {
-    // まず要素を探してみる
-    const profileContainer = findProfileElement(PROFILE_SELECTORS.container);
-    console.log('Profile container found:', profileContainer);
+    // DOM探索
+    exploreDOM();
+    
+    // X.comのメイン構造が読み込まれるまで待機
+    const mainSelectors = [
+      'nav[role="navigation"]',
+      '[data-testid="sidebarColumn"]', 
+      '[data-testid="primaryColumn"]',
+      'main',
+      '#react-root'
+    ];
+    
+    let foundElement = null;
+    for (const selector of mainSelectors) {
+      foundElement = await waitForElement(selector, 5000);
+      if (foundElement) {
+        break;
+      }
+    }
     
     // 初期状態を取得
-    console.log('Twitter Profile Hider: Requesting initial state...');
     chrome.runtime.sendMessage({ action: 'getInitialState' }, (response) => {
       if (chrome.runtime.lastError) {
         console.error('Failed to get initial state:', chrome.runtime.lastError);
         return;
       }
       
-      console.log('Initial state response:', response);
       if (response && response.enabled) {
-        console.log('Extension is enabled, hiding profile');
         toggleProfileVisibility(true);
       }
     });
 
     // DOM変更の監視を開始
-    console.log('Twitter Profile Hider: Starting DOM observation...');
     observeChanges();
     
     // 定期的に要素をチェック（フォールバック）
-    let checkInterval;
-    checkInterval = setInterval(() => {
-      if (isHidden) {
-        const profileContainer = findProfileElement(PROFILE_SELECTORS.container);
-        if (profileContainer && profileContainer.style.visibility !== 'hidden') {
+    setInterval(() => {
+      const profileContainer = findProfileElement(PROFILE_SELECTORS.container);
+      if (isHidden && profileContainer) {
+        if (profileContainer.style.visibility !== 'hidden') {
           toggleProfileVisibility(true);
         }
-      } else if (!isHidden && checkInterval) {
-        // 非表示でない場合は、パフォーマンス向上のためインターバルをクリア
-        clearInterval(checkInterval);
       }
-    }, 3000); // 3秒に延長してパフォーマンスを向上
+    }, 3000);
   } catch (error) {
     console.error('Failed to initialize:', error);
   }
 }
 
-// デバッグ用ログ
-console.log('Twitter Profile Hider: Content script loaded');
-console.log('Document ready state:', document.readyState);
-console.log('Current URL:', window.location.href);
+console.log('X Profile Hider: Content script loaded');
+
+// グローバルテスト関数を追加
+window.testProfileHider = {
+  hide: () => {
+    console.log('Manual test: Hiding profile');
+    toggleProfileVisibility(true);
+  },
+  show: () => {
+    console.log('Manual test: Showing profile');
+    toggleProfileVisibility(false);
+  },
+  findElement: () => {
+    const element = findProfileElement(PROFILE_SELECTORS.container);
+    console.log('Manual test: Found element:', element);
+    return element;
+  },
+  getStatus: () => {
+    console.log('Manual test: Current status:', { isHidden, profileElementCache });
+    return { isHidden, profileElementCache };
+  },
+  directHide: () => {
+    console.log('Direct test: Hiding profile');
+    const element = document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
+    if (element) {
+      element.style.display = 'none';
+      console.log('Direct test: Applied display none');
+    }
+  },
+  directShow: () => {
+    console.log('Direct test: Showing profile');
+    const element = document.querySelector('[data-testid="SideNav_AccountSwitcher_Button"]');
+    if (element) {
+      element.style.display = '';
+      console.log('Direct test: Removed display none');
+    }
+  }
+};
 
 // ページが読み込まれたら初期化
 if (document.readyState === 'loading') {
-  console.log('Twitter Profile Hider: Waiting for DOMContentLoaded');
   document.addEventListener('DOMContentLoaded', init);
 } else {
-  console.log('Twitter Profile Hider: Document already ready, initializing immediately');
   init();
 }
