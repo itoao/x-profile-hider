@@ -2,7 +2,7 @@
 
 // 拡張機能の状態を管理
 let extensionState = {
-  enabled: false
+  enabled: true
 };
 
 // アイコンパス
@@ -27,7 +27,7 @@ const ICONS = {
 async function loadState() {
   try {
     const result = await chrome.storage.local.get(['enabled']);
-    extensionState.enabled = result.enabled || false;
+    extensionState.enabled = result.enabled !== undefined ? result.enabled : true;
     await updateIcon(extensionState.enabled);
   } catch (error) {
     console.error('Failed to load state:', error);
@@ -136,10 +136,10 @@ chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
 // 拡張機能のインストール時の処理
 chrome.runtime.onInstalled.addListener(async (details) => {
   if (details.reason === 'install') {
-    // 初回インストール時は無効状態で開始
-    extensionState.enabled = false;
+    // 初回インストール時は有効状態で開始
+    extensionState.enabled = true;
     await saveState();
-    await updateIcon(false);
+    await updateIcon(true);
   }
 });
 
